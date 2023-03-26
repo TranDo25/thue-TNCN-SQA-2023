@@ -1,4 +1,5 @@
 package com.sqa.models.dtos;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,6 @@ public class NguoinopthueDTO {
     private String loaigiayto;
     private String sodienthoai;
     private Boolean gioitinh;
-
+    private String captcha;
 
 }

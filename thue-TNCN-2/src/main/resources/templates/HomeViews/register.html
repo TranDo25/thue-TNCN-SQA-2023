@@ -2,46 +2,196 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Đăng ký</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <div th:replace="fragments :: html_ref"></div>
 </head>
 
 <body>
-    <div class="container text-center">
-        <div class="m-5">
-            <h1>Đăng ký tài khoản</h1>
-        </div>
- 
-        <form th:action="@{/process_register}" method="post" th:object="${user}" 
-            style="max-width: 600px; margin: 0 auto;">
-            <div class="m-5">
-                <div class="form-group row m-5">
-                    <label class="col-form-label col-4" for="">E-mail</label>
-                    <div class="col-8">
-                        <input type="email" class="form-control" th:field="*{username}" required>
-                    </div>
-                </div>
-                <div class="form-group row m-5">
-                    <label class="col-form-label col-4" for="" >Password</label>
-                    <div class="col-8">
-                        <input type="password" class="form-control" th:field="*{password}" required
-                            minlength="6" maxlength="20">
-                    </div>
-                </div>
-                <div class="form-group row m-5">
-                    <label class="col-form-label col-4" for="">Name</label>
-                    <div class="col-8">
-                        <input type="text" class="form-control" th:field="*{name}" required 
-                            minlength="2" maxlength="40">
-                        <input type="hidden" class="form-control" name="position" value="client" />
-                    </div>
-                </div>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </div>
-        </form>
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Captcha</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Nhập captcha được gửi tới số điện thoại của bạn
+        <input type="text" class="form-control">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Xác nhận</button>
+      </div>
     </div>
-    <div th:replace="fragments :: script_ref"></div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel2">Đăng ký thành công</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Tài khoản và mật khẩu sẽ được gửi đến email của bạn
+      </div>
+      <div class="modal-footer">
+        <a th:href="@{/}">
+         <button type="button"  class="btn btn-primary">Về trang chủ</button>
+        </a>
+      	       
+      </div>
+    </div>
+  </div>
+</div>
+
+	<div class="m-5">
+		<h1>Đăng ký tài khoản</h1>
+	</div>
+	<div class="container border p-3">
+		<div class="alert alert-primary" role="alert">
+			<i id="error-message" style="color: red"></i>
+		</div>
+		<form th:action="@{/processRegister}" method="GET" th:object="${registerModel}">
+			<div class="d-flex justify-content-around">
+				<div class="d-flex flex-column">
+					<label class="d-flex form-label">
+						<p>Mã số thuế</p>
+						<p style="color: red;">*</p>
+					</label> <input id="ma-so-thue" type="text" style="width: 300px;"
+						class="form-control" th:field="*{nguoinopthueDTO.masothue}" required>
+				</div>
+				<div class="">
+					<label class="d-flex form-label">
+						<p>Mã captcha</p>
+						<p style="color: red;">*</p>
+						<div class="border border-dark"
+							style="width: 100px; text-align: center; margin-left: 50px; font-weight: 700; font-style: italic; font-size: 20px; background-color: #e2d9d9;">
+							ABCDS</div>
+					</label> <input type="text" class="form-control" style="width: 300px;"
+						th:field="*{nguoinopthueDTO.captcha}"> <small id="captchaHelp"
+						class="form-text text-muted">Chưa xử lý được captcha</small>
+				</div>
+			</div>
+			<div class="d-flex justify-content-around">
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Email</p>
+						<p style="color: red;">*</p>
+					</label> <input type="email" id="email" class="form-control"
+						style="width: 300px;" th:field="*{nguoinopthueDTO.email}" readonly required>
+
+				</div>
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Tên cá nhân</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" id="ten-ca-nhan" style="width: 300px;"
+						class="form-control" th:field="*{nguoinopthueDTO.tencanhan}" readonly required>
+
+				</div>
+			</div>
+
+			<div class="d-flex justify-content-around">
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Tỉnh thành phố</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" id="tinh-TP" style="width: 300px;"
+						class="form-control" th:field="*{nguoinopthueDTO.tinhTp}" readonly required>
+
+				</div>
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Cơ quan cấp mã số thuế</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" style="width: 300px;" id="co-quan-cap-MST"
+						class="form-control" th:field="*{nguoinopthueDTO.coquancapMst}" readonly required>
+
+				</div>
+			</div>
+			<div class="d-flex justify-content-around">
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Loại giấy tờ</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" id="loai-giay-to" style="width: 300px;"
+						class="form-control" th:field="*{nguoinopthueDTO.loaigiayto}" readonly required>
+
+				</div>
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Số điện thoại</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" id="so-dien-thoai" style="width: 300px;"
+						class="form-control" th:field="*{nguoinopthueDTO.sodienthoai}" readonly required>
+
+				</div>
+
+			</div>
+			<div class="d-flex justify-content-around">
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Chọn ngân hàng</p>
+						<p style="color: red;">*</p>
+					</label>
+					 <select style="width:300px;"  th:field=*{tkttDTO.nganhanghotrothanhtoanId} class="form-select" aria-label="Default select example">
+						<option th:value="'null'"  selected>Chọn ngân hàng thanh toán</option>
+						<option th:value="'BIDV'" th:text="BIDV"></option>
+						<option th:value="'VCB'" th:text="VCB"></option>
+						<option th:value="'VIB'" th:text="VIB"></option>
+					</select>
+
+				</div>
+				<div class="mb-3">
+					<label class="d-flex form-label">
+						<p>Số tài khoản</p>
+						<p style="color: red;">*</p>
+					</label> <input type="text" id="so-the" style="width: 300px;"
+						class="form-control" th:field="*{tkttDTO.sothe}" required>
+				</div>
+			</div>
+			<div class="d-flex justify-content-around mt-4">
+				<button type="button" class="btn btn-outline-primary"
+					style="width: 200px;">
+					<a th:href="@{/}">Cancel</a>
+				</button>
+				
+				<button type="button" data-bs-toggle="modal" href="#exampleModalToggle" role="button" id="btnSubmit" class="btn btn-primary" style="width: 200px;">Sign
+					Up</button>
+
+			</div>
+		</form>
+	</div>
+	<div th:replace="fragments :: script_ref"></div>
+	<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ma-so-thue").on('change', function () {
+            var inputMST = $(this).val();
+            console.log(inputMST);
+            $.ajax({
+                type: "GET",
+                url: "/api/getUserByMST?masothue=" + inputMST,
+                dataType: 'json',
+                success: function (data) {
+                    $("#email").val(data.email);
+                    $("#so-dien-thoai").val(data.sodienthoai);
+                    $("#password").val(data.password);
+                    $("#ten-ca-nhan").val(data.tencanhan);
+                    $("#tinh-TP").val(data.tinhTp);
+                    $("#co-quan-cap-MST").val(data.coquancapMst);
+                    $("#loai-giay-to").val(data.loaigiayto);
+                    $("#username").val(data.username);
+
+                },
+                error: function (error) {
+                    debugger;
+                    $("#error-message").text("mã số thuế không có trong cơ sở dữ liệu");
+                }
+            });
+        })
+    })
+</script>
 </body>
 
 </html>
