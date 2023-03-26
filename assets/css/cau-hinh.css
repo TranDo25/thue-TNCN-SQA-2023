@@ -8,6 +8,7 @@
 }
 
 .button {
+    margin: 10px;
     color: white;
     text-align: center;
     display: inline-block;
@@ -16,6 +17,21 @@
 
 }
 
+.input-text {
+    margin: 10px
+}
+
 .input-num {
+    margin: 10px;
     width: 85px;
+}
+
+.title-content {
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+    padding-bottom: 50px;
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
 }
