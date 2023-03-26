@@ -1,0 +1,21 @@
+.green {
+    background-color: greenyellow;
+}
+
+.red {
+    
+    background-color: red;
+}
+
+.button {
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+
+}
+
+.input-num {
+    width: 85px;
+}
