@@ -1,0 +1,337 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Trang chu</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    
+    <!-- Style -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css” />
+    
+    <link href="./assets/08/fonts/icomoon/style.css" rel="stylesheet" />
+    <link href="./assets/08/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="./assets/08/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/assets/css/dangKiCaNhan.css">
+    <link href="./assets/08/css/style.css" rel="stylesheet" />
+    <link href="./assets/css/errorValidate.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="./assets/js/dangKiCaNhan.js"></script>
+    <link href="./assets/css/FormCss.css" rel="stylesheet" />
+    <link href="./assets/css/cau-hinh.css" rel="stylesheet"/>
+    
+</head>
+<body>
+
+        <input type="hidden" id="quyenDK" value="" />
+        <input type="hidden" id="quyenTrenHeThong" value="" />
+
+    <div class="modal fade" id="ModalAddPB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm mới phòng ban</h5>
+                    <button type="button" id="BtnThemMoiPhongBan" class="close" data-dismiss="modal" aria-label="Close" onclick="changeToAddStatus()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formaddPB">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Tên phòng ban:</label>
+                            <input type="hidden" id="checkAddOrUpdatePB" value="0">
+                            <input type="hidden" id="txtIDPhongBan" value="-1">
+                            <input type="text" class="form-control" id="txtAddModalTenPB" name="txtAddModalTenPB">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success" id="btnAddPB">Thêm mới</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+    <!-- Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cảnh báo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="AlertContent">
+                    bạn có chắc chắn muốn xóa nhân viên này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="hidden" name="name" id="checkAlertIsNVorPB" value="NhanVien" />
+                    <button type="button" class="btn btn-primary" id="confirmDelete">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="ModalAddNhanVien" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thêm mới nhân viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="modal-body" id="formaddnhanvien">
+                    <div>
+                        <input type="hidden" name="checkUpdate" value="0" id="checkUpdate" />
+                        <input type="hidden" name="IDNhanVien" id="idNhanVien" />
+                        <div class="form-group">
+                            <label for="exampleInputName">Họ tên</label>
+                            <input type="text" focusedInput tabindex="auto" name="txtHoTen" class="form-control" id="fullname" placeholder="Trần Xuân Độ">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputName">Tên đăng nhập</label>
+                            <input type="text" tabindex="auto" name="txtTenDangNhap" class="form-control" id="username" aria-describedby="emailHelp" placeholder="NgaiDo123">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputName">Mật khẩu</label>
+                            <input type="password" tabindex="auto" name="txtPassword" class="form-control" id="password" aria-describedby="emailHelp" placeholder="Do123456">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputName">Ngày sinh</label>
+                            @*<input type="date" name="name" value="" class="txtDate"/>*@
+                            <input type="date" name="txtNgaySinh" tabindex="auto" class="form-control" id="dateofbirth">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputName">Email</label>
+                            <input type="email" name="txtEmail" class="form-control" tabindex="auto" id="email" aria-describedby="emailHelp" placeholder="dotrantb25@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Địa chỉ</label>
+                            <input type="text" name="txtDiaChi" class="form-control" id="address" tabindex="auto" placeholder="Văn Quán - Hà Đông - Hà Nội">
+                        </div>
+                        <div class="form-group" id="checkboxsex">
+                            <label for="checkboxsex">Giới tính</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="gioitinhnam" name="gioiTinh" tabindex="auto" value="true" checked>
+                                <label class="form-check-label" for="gioitinhnam">
+                                    Nam
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="gioitinhnu" name="gioiTinh" value="false" tabindex="auto">
+                                <label class="form-check-label" for="gioitinhnu">
+                                    Nữ
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="dropdown-menuPhongBan">
+                            <label for="exampleFormControlSelect1">Phòng ban</label>
+                            <select class="form-control" id="phongban" name="phongbandropdown" tabindex="auto">
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="quyendangkycaan">
+                            <label for="quyendangkycaan">Quyền đăng ký ca ăn</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="quyendkicaan" tabindex="auto" id="quyencanhan" value="ca nhan" checked>
+                                <label class="form-check-label" for="quyencanhan">
+                                    Cá nhân
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="quyendkicaan" id="quyentapthe" tabindex="auto" value="tap the">
+                                <label class="form-check-label" for="quyentapthe">
+                                    Tập thể
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="dropdown-menuQuyenHeThong">
+                            <label for="exampleFormControlSelect1">Quyền hệ thống</label>
+                            <select class="form-control" id="quyenhethong" name="quyenhethongdropdown" tabindex="auto">
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnLuu">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <aside class="sidebar">
+        <div class="toggle">
+            <a href="#" class="burger js-menu-toggle" id="btnCloseSidebar" data-toggle="collapse" data-target="#main-navbar">
+                <span></span>
+            </a>
+        </div>
+        <div class="side-inner">
+            <div class="profile">
+
+                <img src="./assets/08/images/person_4.jpg" alt="Image" class="img-fluid">
+               
+                    <h3 class="name">Trần Xuân Độ</h3>
+
+                    
+                        <span class="country">Admin</span>
+
+
+
+
+            </div>
+            <div class="nav-menu" id="sidebar">
+                <ul id="nhomChucNang">
+
+                    <li class="accordion">
+                        <a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsible">
+                            <span class="icon-search2 mr-3"></span>Đăng ký ca ăn
+                        </a>
+
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingOne">
+                            <div>
+                                <ul id="phanVungDKY">
+                                    <li><a href="#" id="showDkiCaNhan">Đăng ký cá nhân</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="accordion">
+                        <a href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsible">
+                            <span class="icon-search2 mr-3"></span>Thống kê
+                        </a>
+
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingOne">
+                            <div>
+                                <ul id="phanVungThongKe">
+                                    <li><a href="#">Thống kê cá nhân</a></li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li><a href="#"><span class="icon-sign-out mr-3"></span>Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </aside>
+    <main>
+        <div class="site-section">
+
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+                        <div class="main-content">
+                            <div class="btn-container">
+                                <button class="button green">Them moc thue</button>
+                                <button class="button red">Xoa moc thue</button>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td><span>Moc thue so 1</span></td>
+                                    <td><input type="text" placeholder="So 1" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 2</span></td>
+                                    <td><input type="text" placeholder="So 2" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 3</span></td>
+                                    <td><input type="text" placeholder="So 3" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 4</span></td>
+                                    <td><input type="text" placeholder="So 4" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 4</span></td>
+                                    <td><input type="text" placeholder="So 4" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 5</span></td>
+                                    <td><input type="text" placeholder="So 5" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 6</span></td>
+                                    <td><input type="text" placeholder="So 6" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                                <tr>
+                                    <td><span>Moc thue so 7</span></td>
+                                    <td><input type="text" placeholder="So 7" class="input-text"</td>
+                                    <td><span>Thue suat:</span></td>
+                                    <td><input type= text" placeholder="Thue suat" class="input-num"</td>
+                                </tr>
+                            </table>
+                            <div class="btn-container">
+                                <button class="button green">Luu thay doi</button>
+                                <button class="button red">Huy bo thay doi</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="./assets/08/js/jquery-3.3.1.min.js"></script>
+    <script src="./assets/08/js/popper.min.js"></script>
+    <script src="./assets/08/js/bootstrap.min.js"></script>
+    <script src="./assets/08/js/main.js"></script>
+ 
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.18.0/additional-methods.js"></script>
+    <script>
+
+    </script>
+
+
+
+
+    <script src="./assets/js/ajaxFunction.js"></script>
+
+
+</body>
+</html>
+
